@@ -11,5 +11,8 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
       return res.status(403).json({ status: 403, message: "Access denied" });
     }
     req.user = user as AuthUser;
+    next();
   });
 };
+
+export default authMiddleware;
