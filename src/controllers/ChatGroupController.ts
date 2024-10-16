@@ -57,6 +57,42 @@ class ChatGroupController {
       return res.status(500).json({ message: error.message });
     }
   }
+
+  static async update(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const body = req.body;
+
+      const group = await prisma.chatGroup.update({
+        data: {
+          title: body.title,
+          passcode: body.passcode,
+        },
+      });
+      return res
+        .status(200)
+        .json({ message: "Chat groups Updated successfully", data: group });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
+  static async destroy(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const group = await prisma.chatGroup.delete({
+        where: {
+          id: id,
+        },
+      });
+      return res
+        .status(200)
+        .json({ message: "Chat groups Deleted successfully", data: group });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 export default ChatGroupController;
