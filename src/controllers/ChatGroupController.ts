@@ -64,9 +64,9 @@ class ChatGroupController {
       const body = req.body;
 
       const group = await prisma.chatGroup.update({
-        data: {
-          title: body.title,
-          passcode: body.passcode,
+        data: body,
+        where: {
+          id: id,
         },
       });
       return res
