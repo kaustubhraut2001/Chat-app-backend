@@ -7,6 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 7000;
 import router from "./Routes/index.js";
 import { setupSocket } from "./socket.js";
+import { createAdapter } from "@socket.io/redis-streams-adapter";
 // * Middleware
 app.use(cors());
 app.use(express.json());
@@ -18,6 +19,7 @@ const io = new Server(server, {
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
     },
+    adapter: createAdapter(redisClient),
 });
 setupSocket(io);
 export { io };
