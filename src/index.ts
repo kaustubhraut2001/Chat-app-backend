@@ -9,6 +9,7 @@ import router from "./Routes/index.js";
 import { setupSocket } from "./socket.js";
 import { createAdapter } from "@socket.io/redis-streams-adapter";
 import redis from "./config/redis.config.js";
+import { instrument } from "@socket.io/admin-ui";
 // * Middleware
 app.use(cors());
 app.use(express.json());
@@ -17,11 +18,15 @@ app.use(express.urlencoded({ extended: false }));
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: ["http://localhost:8000", "https://admin.socket.io"],
+    // methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   },
   adapter: createAdapter(redis),
+});
+instrument(io, {
+  auth: false,
+  mode: "development",
 });
 setupSocket(io);
 export { io };
